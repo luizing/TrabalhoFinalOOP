@@ -2,7 +2,7 @@
 
 Classes (8):
 * Cliente
-* 
+* Dono
 * Funcionario
 * Editora
 * Autor
