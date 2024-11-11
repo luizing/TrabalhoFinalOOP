@@ -7,7 +7,7 @@ Classes (8):
 * Editora
 * Autor
 * Caixa
-*
+* Estoque
 *
 
 
