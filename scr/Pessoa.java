@@ -1,7 +1,7 @@
 public interface Pessoa {
-    private String nome;
-    private int idade;
-    private int id;
+    public String nome;
+    public int idade;
+    public int id;
 
     public Pessoa(String nome, int idade) {
         this.nome = nome;
