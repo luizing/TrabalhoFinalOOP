@@ -39,12 +39,12 @@ static String caminhoEstoque = "Estoque.csv";
 
         System.out.println(divisorLinha);
         System.out.println("Tela cliente");
-        System.out.println("Qual opção?\n0 = Alugar livro\n1 = Verificar informacoes\n2 = Devolver livro\n3 = Voltar para tela de login");
+        System.out.println("Qual opção?\n1 = Alugar livro\n2 = Verificar informacoes\n3 = Devolver livro\n4 = Mostrar onde estão os livros na prateleira\n0 = Voltar para tela de login");
         int opcao = teclado.nextInt();
         teclado.nextLine(); // Limpa buffer do teclado
 
         switch (opcao) {
-            case 0:
+            case 1:
                 System.out.println(divisorLinha);
                 Estoque.listarLivrosDisponiveis();
                 
@@ -60,16 +60,24 @@ static String caminhoEstoque = "Estoque.csv";
                 
                 break;
 
-            case 1:
+            case 2:
                 System.out.println(divisorLinha);
                 usuario.exibirInfos();
                 break;
-            case 2:
-                System.out.println("Exibindo livros para devolução...");
-                // Implementar lógica para devolver livro
-                break;
             case 3:
+                System.out.println(divisorLinha);
+                usuario.exibirInfos();
+                System.out.println("Digite o id do livro que deseja devolver: ");
+                int devolverLivro = teclado.nextInt();
+
+                break;
+            case 4:
+                System.out.println(divisorLinha);
+                Estoque.exibirEstoque();
+                break;
+            case 0:
                 loop = false;
+                break;
             default:
                 System.out.println("Opção inválida. Retornando ao menu.");
         }
@@ -91,6 +99,7 @@ static String caminhoEstoque = "Estoque.csv";
         boolean loop = true; // Loop tela de login
 
         while (loop) {
+            System.out.println(divisorLinha);
             System.out.println("Login: ");
             String login = teclado.nextLine();
             System.out.println("Senha: ");
@@ -100,7 +109,6 @@ static String caminhoEstoque = "Estoque.csv";
             String tipoUsuario = validarLogin(login, senha);
 
             if ("c".equals(tipoUsuario)) {
-                loop = false;
                 Cliente usuario = new Cliente(login);
                 clienteScreen(teclado,usuario);
             } else if ("f".equals(tipoUsuario)) {

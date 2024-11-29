@@ -48,4 +48,6 @@ public class Cliente {
             System.out.println("Você tem uma dívida pentende de " + this.getValorTotal() + " reais.");
         }
 
+        
+
 }
