@@ -1,95 +1,95 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
 
 public class TerminalTest {
+static String dbPath = "DB.csv";
+static String divisorLinha = "=======================";
 
-    
+    // Valida o login e retorna o tipo de usuário
+    public static String validarLogin(String login, String senha) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(dbPath))) {
+            String linha;
+            while ((linha = reader.readLine()) != null) {
+                String[] valores = linha.split(",");
+                if (valores.length == 3) {
+                    String csvLogin = valores[0].trim();
+                    String csvSenha = valores[1].trim();
+                    String csvTipoUsuario = valores[2].trim();
+                    if (csvLogin.equals(login) && csvSenha.equals(senha)) {
+                        return csvTipoUsuario;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao ler o arquivo CSV: " + e.getMessage());
+        }
+        return null; // Credenciais inválidas
+    }
 
-
-
-
-    // Tela Cliente
-    public static void clienteScreen(){
-        Scanner teclado = new Scanner(System.in);
-        // Login
-        
+    // Tela para clientes
+    public static void clienteScreen(Scanner teclado) {
+        System.out.println(divisorLinha);
         System.out.println("Tela cliente");
-
-        // Selecionar opcao
-        System.out.println("Qual opcao?\n0 = Alugar livro");
+        System.out.println("Qual opção?\n0 = Alugar livro\n1 = Verificar livros alugados\n2 = Devolver livro");
         int opcao = teclado.nextInt();
-    
-        while (opcao != 0 && opcao != 1){
-            System.out.println("Digite uma opcao valida\n0 = Alugar livro\n");
-            opcao = teclado.nextInt();
+        teclado.nextLine(); // Limpa buffer do teclado
+
+        switch (opcao) {
+            case 0:
+                System.out.println(divisorLinha);
+                System.out.println("Alugar livro");
+                // Exibir lista de Livros e Ids
+                // Selecionar Id
+                System.out.println("Digite o Id do livro desejado: ");
+                int idAlugar = teclado.nextInt();
+                Estoque.alugarLivro(idAlugar);  
+                break;
+            case 1:
+                System.out.println("Exibindo livros alugados pelo cliente...");
+                // Implementar lógica para exibir livros alugados
+                break;
+            case 2:
+                System.out.println("Exibindo livros para devolução...");
+                // Implementar lógica para devolver livro
+                break;
+            default:
+                System.out.println("Opção inválida. Retornando ao menu.");
         }
-
-        // Alugar Livro
-        if (opcao == 0){
-            Estoque.exibirLivros();
-            System.out.println("Qual o id do livro desejado?");
-            int livroAlugado = teclado.nextInt();
-            // Checar se livroAlugado está disponivel no estoque(erro cc)
-            // Diminuir livroAlugado do estoque
-            // Adicionar livroAlugado aos adquiridos pelo cliente
-        }
-
-        // Verificar Livros Alugados
-        if (opcao == 1){
-            // Exibir livros em posse do cliente
-        }
-
-        // Devolver livro
-        if (opcao == 2) {
-            // Exibir livros em posse do cliente
-            System.out.println("Qual o id do livro a ser devolvido?\n");
-            int livroDevolver = teclado.nextInt();
-            // Remover livro de Posse do cliente
-            // Adicionar livro ao estoque
-            // "Tela de pagamento"
-        }
-
-
-
-
-        teclado.close();
     }
 
-
-
-
-
-
-
-
-
-    public static void funcionarioScreen(){
-        System.out.println("Tela funcionario");
+    // Tela para funcionários
+    public static void funcionarioScreen(Scanner teclado) {
+        System.out.println("Tela funcionário");
+        // Implementar lógica para funcionários
     }
 
-
-
+    // Método principal
     public static void main(String[] args) {
-        // inicializacoes
         Scanner teclado = new Scanner(System.in);
-        
-        // Entrar como Cliente ou Funcionário
-        System.out.println("Como deseja fazer login?\n0 = Cliente 1 = Funcionario");
-        int loginType = teclado.nextInt();
-    
-        while (loginType != 0 && loginType != 1){
-            System.out.println("Digite uma opcao valida\n0 = Cliente 1 = Funcionario\n");
-            loginType = teclado.nextInt();
-        }
-    
-        if (loginType == 0) {
-            clienteScreen();
-        }
-        else if (loginType == 1) {
-            funcionarioScreen();
+        boolean loop = true; // Loop tela de login
+
+        while (loop) {
+            System.out.println("Login: ");
+            String login = teclado.nextLine();
+            System.out.println("Senha: ");
+            String senha = teclado.nextLine();
+
+            // Valida o login e executa a tela correspondente
+            String tipoUsuario = validarLogin(login, senha);
+
+            if ("c".equals(tipoUsuario)) {
+                loop = false;
+                clienteScreen(teclado);
+            } else if ("f".equals(tipoUsuario)) {
+                loop = false;
+                funcionarioScreen(teclado);
+            } else {
+                System.out.println("Login ou senha inválidos.");
+            }
         }
 
         teclado.close();
-
-
     }
 }

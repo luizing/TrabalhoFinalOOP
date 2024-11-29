@@ -13,6 +13,8 @@ public class Funcionario implements Pessoa {
         this.bonus = 0;
     }
 
+
+
     public String getNome() {
         return nome;
     }
@@ -65,6 +67,30 @@ public class Funcionario implements Pessoa {
 
     public void addEstoque(Livro livro){
         this.estoque.adicionarLivro(livro);
+    }
+
+    @Override
+    public int getIdade() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdade'");
+    }
+
+    @Override
+    public void setIdade(int idade) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setIdade'");
+    }
+
+    @Override
+    public int getId() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getId'");
+    }
+
+    @Override
+    public int setId(int id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setId'");
     }
 
 

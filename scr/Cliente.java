@@ -1,3 +1,5 @@
+import java.util.*;
+
 public class Cliente {
     private String nome;
     private int idade;
@@ -46,18 +48,6 @@ public class Cliente {
 
     public double getValorTotal() {
         return valorTotal;
-    }
-
-    public void alugarLivro(Livro livro){
-        this.livros.add(livro);
-        this.valorTotal += livro.getPreco();
-        Estoque.getEstoque().removerLivro(livro);
-    }
-
-    public void devolverLivro(Livro livro){
-      this.livros.remove(livro);
-      this.valorTotal -= livro.getPreco();
-      Estoque.getEstoque().adicionarLivro(livro);
     }
 
 }

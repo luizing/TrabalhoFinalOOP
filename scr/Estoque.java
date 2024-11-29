@@ -1,56 +1,63 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-
 public class Estoque {
-    private List<Livro> livros;
-    static String path = "Estoque.csv";
 
-    
+    // Matriz representando o estoque de livros
+    // O estoque está representao estático no código, mas pode ser implementado em um csv ou outra estrutura de dados.
+    private static int[][] estoque = {
+        {0, 1, 2}, 
+        {3, 0, 4}, 
+        {0, 5, 0}
+    };
 
-    public Estoque() {
-        livros = new ArrayList<>();
-    }
-
-    public void adicionarLivro(Livro livro) {
-        livros.add(livro);
-    }
-
-    public void removerLivro(Livro livro) {
-        livros.remove(livro);
-    }
-
-    public Livro encontrarLivro(String titulo) {
-        for (Livro livro : livros) {
-            if (livro.getTitulo().equals(titulo)) {
-                return livro;
-            }
-        }
-        return null;
-    }
-
-    public List<Livro> getLivros() {
-        return livros;
-    }
-
-    public static void exibirLivros(){
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                // Divida a linha pelo separador vírgula
-                String[] campos = linha.split(",");
-                
-                // Imprime os campos
-                for (String campo : campos) {
-                    System.out.print(campo + " ");
+    // Exibir a matriz de estoque
+    public static void exibirEstoque() {
+        System.out.println("Matriz do Estoque (Prateleiras):");
+        for (int prateleira = 0; prateleira < estoque.length; prateleira++) {
+            for (int posicao = 0; posicao < estoque[prateleira].length; posicao++) {
+                if (estoque[prateleira][posicao] == 0) {
+                    System.out.print("[ ] "); // Slot vazio
+                } else {
+                    System.out.print("[" + estoque[prateleira][posicao] + "] "); // ID do livro
                 }
-                System.out.println();  // Nova linha após cada linha do CSV
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println();
         }
+    }
+
+    // Verificar se um livro está disponível
+    public static boolean verificarDisponibilidade(int idLivro) {
+        for (int prateleira = 0; prateleira < estoque.length; prateleira++) {
+            for (int posicao = 0; posicao < estoque[prateleira].length; posicao++) {
+                if (estoque[prateleira][posicao] == idLivro) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Alugar um livro (remove o livro da matriz)
+    public static boolean alugarLivro(int idLivro) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                if (estoque[i][j] == idLivro) {
+                    estoque[i][j] = 0; // Remove o livro
+                    return true;
+                }
+            }
+        }
+        return false; // Livro não encontrado
+    }
+
+    // Devolver um livro (adiciona o livro em um slot vazio)
+    public static boolean devolverLivro(int idLivro) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                if (estoque[i][j] == 0) {
+                    estoque[i][j] = idLivro; // Adiciona o livro ao slot vazio
+                    return true;
+                }
+            }
+        }
+        return false; // Sem espaço disponível
     }
 }
