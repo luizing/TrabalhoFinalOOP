@@ -1,46 +1,83 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class Estoque {
 
-    // Matriz representando o estoque de livros
-    // O estoque está representao estático no código, mas pode ser implementado em um csv ou outra estrutura de dados.
-    private static int[][] estoque = {
-        {0, 1, 2}, 
-        {3, 0, 4}, 
-        {0, 5, 0}
-    };
+    private static Livro[][] estoque; // Matriz de objetos Livro
 
-    // Exibir a matriz de estoque
+    // Inicializa o estoque a partir de um arquivo CSV
+    public static void carregarEstoque(String caminhoCSV, int linhas, int colunas) {
+        estoque = new Livro[linhas][colunas];
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(caminhoCSV))) {
+            String linha;
+            int id = 0;
+
+            while ((linha = reader.readLine()) != null) {
+                String[] valores = linha.split(",");
+                if (valores.length == 2) {
+                    int livroId = Integer.parseInt(valores[0].trim());
+                    String titulo = valores[1].trim();
+                    Livro livro = new Livro(livroId, titulo);
+
+                    // Popula a matriz (linhas e colunas automaticamente)
+                    int linhaIdx = id / colunas;
+                    int colunaIdx = id % colunas;
+                    if (linhaIdx < linhas) {
+                        estoque[linhaIdx][colunaIdx] = livro;
+                    }
+                    id++;
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Erro ao carregar o estoque: " + e.getMessage());
+        }
+    }
+
+    // Exibe a matriz do estoque
     public static void exibirEstoque() {
         System.out.println("Matriz do Estoque (Prateleiras):");
-        for (int prateleira = 0; prateleira < estoque.length; prateleira++) {
-            for (int posicao = 0; posicao < estoque[prateleira].length; posicao++) {
-                if (estoque[prateleira][posicao] == 0) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                Livro livro = estoque[i][j];
+                if (livro == null) {
                     System.out.print("[ ] "); // Slot vazio
                 } else {
-                    System.out.print("[" + estoque[prateleira][posicao] + "] "); // ID do livro
+                    System.out.print("[" + livro.getTitulo() + "] ");
                 }
             }
             System.out.println();
         }
     }
 
-    // Verificar se um livro está disponível
-    public static boolean verificarDisponibilidade(int idLivro) {
-        for (int prateleira = 0; prateleira < estoque.length; prateleira++) {
-            for (int posicao = 0; posicao < estoque[prateleira].length; posicao++) {
-                if (estoque[prateleira][posicao] == idLivro) {
-                    return true;
+    // Exibe a lista de livros disponíveis
+    public static void listarLivrosDisponiveis() {
+        System.out.println("Livros disponíveis no estoque:");
+        boolean disponivel = false;
+
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                Livro livro = estoque[i][j];
+                if (livro != null) {
+                    disponivel = true;
+                    System.out.println(livro);
                 }
             }
         }
-        return false;
+
+        if (!disponivel) {
+            System.out.println("Nenhum livro disponível no estoque.");
+        }
     }
 
     // Alugar um livro (remove o livro da matriz)
     public static boolean alugarLivro(int idLivro) {
         for (int i = 0; i < estoque.length; i++) {
             for (int j = 0; j < estoque[i].length; j++) {
-                if (estoque[i][j] == idLivro) {
-                    estoque[i][j] = 0; // Remove o livro
+                Livro livro = estoque[i][j];
+                if (livro != null && livro.getId() == idLivro) {
+                    estoque[i][j] = null; // Remove o livro
                     return true;
                 }
             }
@@ -49,15 +86,28 @@ public class Estoque {
     }
 
     // Devolver um livro (adiciona o livro em um slot vazio)
-    public static boolean devolverLivro(int idLivro) {
+    public static boolean devolverLivro(Livro livro) {
         for (int i = 0; i < estoque.length; i++) {
             for (int j = 0; j < estoque[i].length; j++) {
-                if (estoque[i][j] == 0) {
-                    estoque[i][j] = idLivro; // Adiciona o livro ao slot vazio
+                if (estoque[i][j] == null) {
+                    estoque[i][j] = livro; // Adiciona o livro ao slot vazio
                     return true;
                 }
             }
         }
         return false; // Sem espaço disponível
     }
+
+    public static Livro buscarLivroPorId(int idLivro) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                Livro livro = estoque[i][j];
+                if (livro != null && livro.getId() == idLivro) {
+                    return livro; // Retorna o livro encontrado
+                }
+            }
+        }
+        return null; // ID não encontrado
+    }
+    
 }

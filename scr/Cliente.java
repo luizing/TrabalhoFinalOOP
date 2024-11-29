@@ -2,52 +2,50 @@ import java.util.*;
 
 public class Cliente {
     private String nome;
-    private int idade;
-    private int id;
-    private List<Livro> livros;
-    private double valorTotal;
-
-    public Cliente(String nome, int idade) {
-        this.nome = nome;
-        this.idade = idade;
-        this.livros = new ArrayList<>();
-        this.valorTotal = 0;
+    private static List<Livro> livros;
+    private static double valorTotal;
+        
+            public Cliente(String nome) {
+                this.nome = nome;
+                Cliente.livros = new ArrayList<>();
+                Cliente.valorTotal = 0;
+            }
+        
+            public String getNome() {
+                return nome;
+            }
+        
+            public void setNome(String nome) {
+                this.nome = nome;
+            }
+        
+            public List<Livro> getLivros() {
+                return livros;
+            }
+        
+            public void setLivros(List<Livro> livros) {
+                Cliente.livros = livros;
+            }
+        
+            public double getValorTotal() {
+                return valorTotal;
+            }
+        
+            public void alugarLivro(Livro livro){
+                livros.add(livro);
+                valorTotal += 20;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public int getIdade() {
-        return idade;
-    }
-
-    public void setIdade(int idade) {
-        this.idade = idade;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public List<Livro> getLivros() {
-        return livros;
-    }
-
-    public void setLivros(List<Livro> livros) {
-        this.livros = livros;
-    }
-
-    public double getValorTotal() {
-        return valorTotal;
-    }
+        public void exibirInfos(){
+            if (livros.isEmpty()) {
+                System.out.println("Você não possui livros alugados.");
+            } else {
+                System.out.println("Livros atualmente alugados:");
+                for (Livro livro : livros) {
+                    System.out.println(livro);
+                }
+            }
+            System.out.println("Você tem uma dívida pentende de " + this.getValorTotal() + " reais.");
+        }
 
 }

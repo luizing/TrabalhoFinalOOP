@@ -6,6 +6,9 @@ import java.util.Scanner;
 public class TerminalTest {
 static String dbPath = "DB.csv";
 static String divisorLinha = "=======================";
+static String caminhoEstoque = "Estoque.csv";
+
+//Valor estático de 20$ para o aluguel de qualquer livro
 
     // Valida o login e retorna o tipo de usuário
     public static String validarLogin(String login, String senha) {
@@ -29,34 +32,48 @@ static String divisorLinha = "=======================";
     }
 
     // Tela para clientes
-    public static void clienteScreen(Scanner teclado) {
+    public static void clienteScreen(Scanner teclado,Cliente usuario) {
+        boolean loop = true;
+    
+        while (loop) {
+
         System.out.println(divisorLinha);
         System.out.println("Tela cliente");
-        System.out.println("Qual opção?\n0 = Alugar livro\n1 = Verificar livros alugados\n2 = Devolver livro");
+        System.out.println("Qual opção?\n0 = Alugar livro\n1 = Verificar informacoes\n2 = Devolver livro\n3 = Voltar para tela de login");
         int opcao = teclado.nextInt();
         teclado.nextLine(); // Limpa buffer do teclado
 
         switch (opcao) {
             case 0:
                 System.out.println(divisorLinha);
-                System.out.println("Alugar livro");
-                // Exibir lista de Livros e Ids
-                // Selecionar Id
+                Estoque.listarLivrosDisponiveis();
+                
                 System.out.println("Digite o Id do livro desejado: ");
                 int idAlugar = teclado.nextInt();
-                Estoque.alugarLivro(idAlugar);  
+                
+                Livro alugado = Estoque.buscarLivroPorId(idAlugar);
+                if (Estoque.alugarLivro(idAlugar)){
+                    usuario.alugarLivro(alugado);
+                }else{
+                    System.out.println("Id de livro não encontrado!");
+                }
+                
                 break;
+
             case 1:
-                System.out.println("Exibindo livros alugados pelo cliente...");
-                // Implementar lógica para exibir livros alugados
+                System.out.println(divisorLinha);
+                usuario.exibirInfos();
                 break;
             case 2:
                 System.out.println("Exibindo livros para devolução...");
                 // Implementar lógica para devolver livro
                 break;
+            case 3:
+                loop = false;
             default:
                 System.out.println("Opção inválida. Retornando ao menu.");
         }
+    }
     }
 
     // Tela para funcionários
@@ -67,6 +84,9 @@ static String divisorLinha = "=======================";
 
     // Método principal
     public static void main(String[] args) {
+
+        Estoque.carregarEstoque(caminhoEstoque,10, 10);
+
         Scanner teclado = new Scanner(System.in);
         boolean loop = true; // Loop tela de login
 
@@ -81,7 +101,8 @@ static String divisorLinha = "=======================";
 
             if ("c".equals(tipoUsuario)) {
                 loop = false;
-                clienteScreen(teclado);
+                Cliente usuario = new Cliente(login);
+                clienteScreen(teclado,usuario);
             } else if ("f".equals(tipoUsuario)) {
                 loop = false;
                 funcionarioScreen(teclado);
