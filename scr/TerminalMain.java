@@ -11,6 +11,7 @@ static String dbPath = "DB.csv";
 static String caminhoEstoque = "Estoque.csv";
 static String divisorLinha = "=======================";
 private static List<Cliente> clientes = new ArrayList<>();
+private static List<Funcionario> funcionarios = new ArrayList<>();
 
     
     public static String validarLogin(String login, String senha) {
@@ -196,7 +197,7 @@ private static List<Cliente> clientes = new ArrayList<>();
                     System.out.println(divisorLinha);
                     if (clientes.isEmpty()) {
                         System.out.println("Nenhum cliente cadastrado.");
-                        return;
+                        break;
                     }
                     System.out.println("Clientes cadastrados:");
                     for (Cliente cliente : clientes) {

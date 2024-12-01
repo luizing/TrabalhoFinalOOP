@@ -1,22 +1,13 @@
 import java.util.*;
 
-public class Cliente {
-    private String nome;
+public class Cliente extends Pessoa{
     private static List<Livro> livros;
     private static double valorTotal;
         
             public Cliente(String nome) {
-                this.nome = nome;
+                Nome = nome;
                 Cliente.livros = new ArrayList<>();
                 Cliente.valorTotal = 0;
-            }
-        
-            public String getNome() {
-                return nome;
-            }
-        
-            public void setNome(String nome) {
-                this.nome = nome;
             }
         
             public List<Livro> getLivros() {
