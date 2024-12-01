@@ -28,3 +28,7 @@ Implementar tela de funcionario.
 Adicionar mais classes.
 Criar interface pessoa
 Tratar entradas
+
+Valor estático de 20$ por livro
+
+Problema: O id deveria ser adicionado automaticamente para não ter 2 livros com o mesmo id.

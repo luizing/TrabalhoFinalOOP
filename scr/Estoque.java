@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.List;
 
 public class Estoque {
 
@@ -109,5 +110,49 @@ public class Estoque {
         }
         return null; // ID não encontrado
     }
+
+    public static boolean adicionarLivro(Livro livro) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                if (estoque[i][j] == null) { // Encontra uma posição vazia
+                    estoque[i][j] = livro;
+                    return true;
+                }
+            }
+        }
+        return false; // Estoque cheio
+    }
+
+    public static boolean removerLivro(int id) {
+        for (int i = 0; i < estoque.length; i++) {
+            for (int j = 0; j < estoque[i].length; j++) {
+                if (estoque[i][j] != null && estoque[i][j].getId() == id) {
+                    estoque[i][j] = null; // Remove o livro
+                    return true;
+                }
+            }
+        }
+        return false; // Livro não encontrado
+    }
+
+    public static void exibirLivrosAlugados(List<Cliente> clientes) {
+    System.out.println("Livros alugados:");
+    if (clientes.isEmpty()) {
+        System.out.println("Nenhum cliente encontrado.");
+    }else{
+    for (Cliente cliente : clientes) {
+        List<Livro> livros = cliente.getLivros();
+        if (!livros.isEmpty()) {
+            System.out.println("Cliente: " + cliente.getNome());
+            for (Livro livro : livros) {
+                System.out.println("  " + livro);
+            }
+            System.out.println("Didiva: " + cliente.getValorTotal() + "$");
+        }
+    }
+}
+}
+
+    
     
 }
