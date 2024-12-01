@@ -1,6 +1,10 @@
 public class Funcionario extends Pessoa {
 	private String numeroCracha;
 	private double salario;
+
+	public Funcionario(){
+		
+	}
 	
 	private void cracha() {
 		System.out.printf("Nº do seu Crachá: ", numeroCracha);

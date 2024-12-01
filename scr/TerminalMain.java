@@ -11,9 +11,7 @@ static String dbPath = "DB.csv";
 static String caminhoEstoque = "Estoque.csv";
 static String divisorLinha = "=======================";
 private static List<Cliente> clientes = new ArrayList<>();
-private static List<Funcionario> funcionarios = new ArrayList<>();
 
-    
     public static String validarLogin(String login, String senha) {
         try (BufferedReader reader = new BufferedReader(new FileReader(dbPath))) {
             String linha;
