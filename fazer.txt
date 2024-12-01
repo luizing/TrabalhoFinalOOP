@@ -1,0 +1,9 @@
+Eu:
+throw nos whiles
+id automatico livro
+salvar txt
+Hasten:
+Classe abstrata
+Joption pane
+outras Classe (herança)
+Bonificação

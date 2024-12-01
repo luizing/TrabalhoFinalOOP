@@ -8,6 +8,10 @@ public class Livro {
         this.titulo = titulo;
     }
 
+    public Livro(String titulo) {
+        this.titulo = titulo;
+    }
+
     // Getters
     public int getId() {
         return id;

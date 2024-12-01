@@ -163,7 +163,6 @@ private static List<Cliente> clientes = new ArrayList<>();
                         System.out.println("Nenhum cliente cadastrado.");
                         return;
                     }
-                
                     System.out.println("Clientes cadastrados:");
                     for (Cliente cliente : clientes) {
                         System.out.println("- " + cliente.getNome());
