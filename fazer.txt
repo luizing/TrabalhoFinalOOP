@@ -1,7 +1,7 @@
 Eu:
-throw nos whiles
+throw nos whiles - ok
 id automatico livro
-salvar txt
+salvar txt - ok
 Hasten:
 Classe abstrata
 Joption pane

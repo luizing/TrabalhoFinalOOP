@@ -55,14 +55,17 @@ private static List<Cliente> clientes = new ArrayList<>();
     // Tela para clientes
     public static void clienteScreen(Scanner teclado,Cliente usuario) {
         boolean loop = true;
-    
+        
         while (loop) {
-
+        int opcao = -1;
         System.out.println(divisorLinha);
         System.out.println("Tela cliente");
         System.out.println("Qual opção?\n1 = Alugar livro\n2 = Verificar informacoes\n3 = Devolver livro\n4 = Mostrar onde estão os livros na prateleira\n0 = Voltar para tela de login");
-        int opcao = teclado.nextInt();
-        teclado.nextLine(); // Limpa buffer do teclado
+        try{
+             opcao = Integer.parseInt(teclado.nextLine());
+        }catch (NumberFormatException e){
+            System.out.println("Entrada inválida");
+        }
 
         switch (opcao) {
             case 1:
@@ -70,41 +73,54 @@ private static List<Cliente> clientes = new ArrayList<>();
                 Estoque.listarLivrosDisponiveis();
                 
                 System.out.println("Digite o Id do livro desejado: ");
-                int idAlugar = teclado.nextInt();
                 
-                Livro alugado = Estoque.buscarLivroPorId(idAlugar);
-                if (Estoque.alugarLivro(idAlugar)){
-                    usuario.alugarLivro(alugado);
-                }else{
-                    System.out.println("Id de livro não encontrado!");
+                try{
+                    int idAlugar = Integer.parseInt(teclado.nextLine());
+              
+                    Livro alugado = Estoque.buscarLivroPorId(idAlugar);
+                    if (Estoque.alugarLivro(idAlugar)){
+                        usuario.alugarLivro(alugado);
+                    }else{
+                        System.out.println("Id de livro não encontrado!");
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Erro de entrada");
                 }
                 break;
+
             case 2:
                 System.out.println(divisorLinha);
                 usuario.exibirInfos();
                 break;
+
             case 3:
                 System.out.println(divisorLinha);
                 usuario.exibirInfos();
-                System.out.println("Digite o id do livro que deseja devolver: ");
-                int devolverLivro = teclado.nextInt();
-                teclado.nextLine();
-                Livro devolvido = usuario.idToLivro(devolverLivro);
-                if (devolvido != null) {
-                    usuario.devolverLivro(devolvido);
-
-                }else{
-                    System.out.println("Livro não encontrado");
+                try{
+                    System.out.println("Digite o id do livro que deseja devolver: ");
+                    int devolverLivro = Integer.parseInt(teclado.nextLine());
+                    Livro devolvido = usuario.idToLivro(devolverLivro);
+                    if (devolvido != null) {
+                        usuario.devolverLivro(devolvido);
+                        Comprovante.gerarComprovanteDevolucao(usuario, devolvido);
+                    }else{
+                        System.out.println("Livro não encontrado");
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Erro de entrada");
                 }
                 break;
+
             case 4:
                 System.out.println(divisorLinha);
                 Estoque.exibirEstoque();
                 break;
+
             case 0:
                 System.out.println("Saindo da tela de cliente...");
                 loop = false;
                 break;
+
             default:
                 System.out.println("Opção inválida. Tente novamente.");
         }
@@ -115,48 +131,67 @@ private static List<Cliente> clientes = new ArrayList<>();
     public static void funcionarioScreen(Scanner teclado) {
         boolean loop = true;
         while (loop) {
+            int opcao = -1;
             System.out.println(divisorLinha);
             System.out.println("Tela funcionário");
             System.out.println("Qual opção?\n1 = Visualizar estoque\n2 = Adicionar livro ao estoque\n3 = Remover livro do estoque\n4 = Verifica livros alugados\n5 = Exibir clientes\n0 = Voltar para tela de login");
             
-            int opcao = teclado.nextInt();
-            teclado.nextLine(); // Limpa o buffer
+            try{
+                opcao = Integer.parseInt(teclado.nextLine());
+            }catch (NumberFormatException e){
+                System.out.println("Entrada inválida");
+            }
         
             switch (opcao) {
                 case 1:
                     System.out.println(divisorLinha);
                     Estoque.exibirEstoque();
                     break;
+
                 case 2: 
                     System.out.println(divisorLinha);
                     System.out.println("Digite o ID do novo livro:");
-                    int id = teclado.nextInt();
-                    teclado.nextLine(); 
-                    System.out.println("Digite o título do novo livro:");
-                    String titulo = teclado.nextLine();
-                    Livro novoLivro = new Livro(id, titulo);
-                    if (Estoque.adicionarLivro(novoLivro)) {
-                        System.out.println("Livro adicionado com sucesso!");
-                    } else {
-                        System.out.println("Erro: Não foi possível adicionar o livro ao estoque.");
+                    try{
+                        int id = Integer.parseInt(teclado.nextLine());
+                        System.out.println("Digite o título do novo livro:");
+                        String titulo = teclado.nextLine();
+                        Livro novoLivro;
+                        if (id != 0) {
+                            novoLivro = new Livro(id, titulo);
+                        }else{
+                            novoLivro = new Livro(titulo);
+                        }
+                        if (Estoque.adicionarLivro(novoLivro)) {
+                            System.out.println("Livro adicionado com sucesso!");
+                        } else {
+                            System.out.println("Erro: Não foi possível adicionar o livro ao estoque.");
+                        }
+                    }catch(NumberFormatException e){
+                        System.out.println("Erro");
                     }
                     break;
+
                 case 3: 
                     System.out.println(divisorLinha);
                     Estoque.listarLivrosDisponiveis();
                     System.out.println("Digite o ID do livro que deseja remover:");
-                    int idRemover = teclado.nextInt();
-                    teclado.nextLine(); 
-                    if (Estoque.removerLivro(idRemover)) {
-                        System.out.println("Livro removido com sucesso!");
-                    } else {
-                        System.out.println("Erro: Livro não encontrado no estoque.");
+                    try{
+                        int idRemover = Integer.parseInt(teclado.nextLine());
+                        if (Estoque.removerLivro(idRemover)) {
+                            System.out.println("Livro removido com sucesso!");
+                        } else {
+                            System.out.println("Erro: Livro não encontrado no estoque.");
+                        }   
+                    }catch(NumberFormatException e){
+                        System.out.println("Erro");
                     }
                     break;
+
                 case 4: 
                     System.out.println(divisorLinha);
                     Estoque.exibirLivrosAlugados(clientes); 
                     break;
+
                 case 5:
                     System.out.println(divisorLinha);
                     if (clientes.isEmpty()) {
@@ -168,10 +203,12 @@ private static List<Cliente> clientes = new ArrayList<>();
                         System.out.println("- " + cliente.getNome());
                     }
                     break;
-                case 0: // Sair
+
+                case 0: 
                     System.out.println("Saindo da tela de funcionário...");
                     loop = false;
                     break;
+
                 default:
                     System.out.println("Opção inválida. Tente novamente.");
                 }

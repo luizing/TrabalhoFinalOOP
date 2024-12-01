@@ -21,6 +21,7 @@ public class Estoque {
                     int livroId = Integer.parseInt(valores[0].trim());
                     String titulo = valores[1].trim();
                     Livro livro = new Livro(livroId, titulo);
+                    Livro.ultimoId++;
 
                     // Popula a matriz (linhas e colunas automaticamente)
                     int linhaIdx = id / colunas;

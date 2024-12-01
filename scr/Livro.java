@@ -1,4 +1,6 @@
 public class Livro {
+    public static int ultimoId = 0;
+
     private int id;
     private String titulo;
 
@@ -9,6 +11,7 @@ public class Livro {
     }
 
     public Livro(String titulo) {
+        this.id = gerarIdUnico();
         this.titulo = titulo;
     }
 
@@ -19,6 +22,11 @@ public class Livro {
 
     public String getTitulo() {
         return titulo;
+    }
+
+    private static int gerarIdUnico() {
+        ultimoId++; 
+        return ultimoId;
     }
 
     @Override
